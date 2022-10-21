@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -13,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   cargando = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, 
+              private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -38,9 +41,14 @@ export class LoginComponent implements OnInit {
 
     // console.log( email, password );
 
-    this.authService.login(email, password).subscribe( resp => {
+    this.authService.login(email, password)
+      .subscribe( resp => {
 
-      console.log( resp );
+        if ( resp ) {
+          this.router.navigate(['/home']);
+        } else {
+          Swal.fire('Error', 'Credenciales incorrectas', 'info');
+        }
 
 
       this.cargando = false;

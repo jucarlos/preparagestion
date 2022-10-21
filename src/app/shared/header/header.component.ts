@@ -9,15 +9,23 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.isAutenticated();
   }
 
   entrarSalir() {
-    
-    this.router.navigate(['/auth']);
+
+
+    if ( this.authService.isAutenticated() ) {
+      this.authService.logout();
+      this.router.navigate([['/home']]);
+    } else {
+      this.router.navigate(['/auth']);
+    }
+
+
 
 
   }

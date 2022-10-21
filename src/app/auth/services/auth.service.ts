@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { BASE_URL } from 'src/environments/environment';
 import { RESTUser, Usuario } from '../interfaces/interfaces';
 
@@ -23,8 +23,6 @@ export class AuthService {
     {'Content-Type': 'application/json'}
   );
 
-
-
   constructor(
     private http: HttpClient,
     private router: Router
@@ -40,26 +38,30 @@ export class AuthService {
 
 
 
-
-  login ( email: string , password: string ): Observable<RESTUser>{
+  login ( email: string , password: string ): Observable<boolean>{
 
     const url = `${BASE_URL}/login`;
 
-    return this.http.post<RESTUser>( url , { email,password }, { headers: this.httpHeaders})
+    return this.http.post<RESTUser>( url , { email,password }, 
+            { headers: this.httpHeaders })
     .pipe(
       map( resp => {
 
         console.log('Respuesta en el map: ', resp);
         this.usuario.email = resp.usuario?.email;
         this.usuario.nombre = resp.usuario.nombre;
+        this._tituloBotonLogin = `Salir ${this.usuario.nombre }`;
         this.token = resp.token;
         this.guardarStorage();
-        return resp;
+        return  (true);
       }),
-   
+      catchError ( error => {
 
-    )
-    ;
+        return of( false );
+      }),
+
+    );
+
 
   }
 

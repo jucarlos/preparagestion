@@ -15,6 +15,7 @@ const routes: Routes = [
     {
       path: 'gestion',
       loadChildren: () => import('./gestion/gestion.module').then( m => m.GestionModule ),
+      canLoad: []
     },
 
     {

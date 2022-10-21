@@ -24,10 +24,11 @@
             </ul>
         
         <div class="d-flex">
-          <button type="button"
+          <button  type="button"
                   (click)="entrarSalir()"
                   class="btn btn-outline-success">
-                  Entrar</button>
+                  {{ authService.tituloBotonLogin}}</button>
+
             <!-- <a class="btn btn-outline-success" 
                 routerLink="auth">{{ authService.tituloBotonLogin}}</a> -->
         </div>
